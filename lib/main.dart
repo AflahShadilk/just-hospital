@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'app/theme/app_theme.dart';
 import 'app/routes/app_routes.dart';
+import 'app/theme/app_theme.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const JustDialHospitalApp());
 }
@@ -30,7 +36,7 @@ class JustDialHospitalApp extends StatelessWidget {
           page: () => const Scaffold(
             body: Center(
               child: Text(
-                'JustDial Hospital',
+                'Firebase Connected',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

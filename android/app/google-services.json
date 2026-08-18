@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1011469827335",
+    "project_id": "justhospital-58397",
+    "storage_bucket": "justhospital-58397.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011469827335:android:01c814df27ae70cf8ed9a2",
+        "android_client_info": {
+          "package_name": "com.example.justhospital"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Xc9EiUn50YFAHnrK-nSSJa2zKSohNoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
