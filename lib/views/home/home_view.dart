@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justhospital/controllers/hospital_controller.dart';
+import 'package:justhospital/views/home/hospital_details_view.dart';
 import 'package:justhospital/views/widgets/empty_hospital_state.dart';
 import 'package:justhospital/views/widgets/home_header.dart';
 import 'package:justhospital/views/widgets/hospital_search_field.dart';
 import 'package:justhospital/views/widgets/error_state.dart';
 import 'package:justhospital/views/widgets/hospital_card.dart';
-
 
 class HomeView extends GetView<HospitalController> {
   const HomeView({super.key});
@@ -18,15 +18,12 @@ class HomeView extends GetView<HospitalController> {
         child: Column(
           children: [
             const HomeHeader(),
-
             HospitalSearchField(
               onChanged: controller.searchHospitals,
             ),
-
             const SizedBox(height: 8),
-
             Expanded(
-              child: buildHospitalList(),
+              child: hospitalList(),
             ),
           ],
         ),
@@ -34,7 +31,7 @@ class HomeView extends GetView<HospitalController> {
     );
   }
 
-  Widget buildHospitalList() {
+  Widget hospitalList() {
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(
@@ -59,16 +56,20 @@ class HomeView extends GetView<HospitalController> {
           20,
           24,
         ),
-        itemCount:
-            controller.filteredHospitals.length,
-        separatorBuilder: (_, __) =>
-            const SizedBox(height: 16),
+        itemCount: controller.filteredHospitals.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 16),
         itemBuilder: (context, index) {
-          final hospital =
-              controller.filteredHospitals[index];
+          final hospital = controller.filteredHospitals[index];
 
           return HospitalCard(
             hospital: hospital,
+            onTap: () {
+              Get.to(
+                () => HospitalDetailsView(
+                  hospital: hospital,
+                ),
+              );
+            },
           );
         },
       );
