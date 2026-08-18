@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justhospital/firebase_options.dart';
 
-import 'app/routes/app_routes.dart';
-import 'app/theme/app_theme.dart';
+import 'core/app/routes/app_routes.dart';
+import 'core/app/theme/app_theme.dart';
 import 'controllers/hospital_controller.dart';
 
 Future<void> main() async {

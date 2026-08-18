@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:justhospital/core/helpers/contact_helper.dart';
 import 'package:justhospital/models/hospital_model.dart';
 import 'package:justhospital/views/widgets/hospital_image.dart';
 import 'package:justhospital/views/widgets/specialisation_chip.dart';
@@ -214,14 +215,26 @@ class HospitalDetailsView extends StatelessWidget {
 
   Widget callButton() {
     return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {
-        
-        },
-        icon: const Icon(Icons.phone),
-        label: const Text('Call Hospital'),
-      ),
-    );
+    width: double.infinity,
+    child: ElevatedButton.icon(
+      onPressed: hospital.phone.trim().isEmpty
+          ? null
+          : () async {
+              try {
+                await ContactHelper.callHospital(
+                  hospital.phone,
+                );
+              } catch (_) {
+                Get.snackbar(
+                  'Unable to call',
+                  'Could not open the phone dialer.',
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+              }
+            },
+      icon: const Icon(Icons.phone),
+      label: const Text('Call Hospital'),
+    ),
+  );
   }
 }
