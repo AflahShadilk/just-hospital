@@ -7,7 +7,6 @@ import 'app/routes/app_routes.dart';
 import 'app/theme/app_theme.dart';
 import 'controllers/hospital_controller.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -30,18 +29,7 @@ class JustDialHospitalApp extends StatelessWidget {
       title: 'JustDial Hospital',
       theme: AppTheme.lightTheme,
       initialRoute: AppRoutes.home,
-      getPages: [
-        GetPage(
-          name: AppRoutes.home,
-          page: () => const Scaffold(
-            body: Center(
-              child: Text(
-                'Hospital Data Connected',
-              ),
-            ),
-          ),
-        ),
-      ],
+      getPages: AppRoutes.pages,
     );
   }
 }
