@@ -1,58 +1,80 @@
-import 'package:get/get.dart';
-import 'package:justhospital/data/hospital_data.dart';
+import 'dart:async';
+
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:justhospital/data/hospital_service.dart';
 import 'package:justhospital/models/hospital_model.dart';
 
+
 class HospitalController extends GetxController {
+  final HospitalService _hospitalService = HospitalService();
+
   final RxList<HospitalModel> hospitals =
       <HospitalModel>[].obs;
 
   final RxList<HospitalModel> filteredHospitals =
       <HospitalModel>[].obs;
 
-  final RxString searchQuery = ''.obs;
+  final RxBool isLoading = true.obs;
+
+  final RxString errorMessage = ''.obs;
+
+  StreamSubscription<List<HospitalModel>>?
+      _hospitalSubscription;
 
   @override
   void onInit() {
     super.onInit();
-
-    loadHospitals();
+    _listenToHospitals();
   }
 
-  void loadHospitals() {
-    hospitals.assignAll(HospitalData.hospitals);
+  void _listenToHospitals() {
+    isLoading.value = true;
+    errorMessage.value = '';
 
-    filteredHospitals.assignAll(hospitals);
+    _hospitalSubscription =
+        _hospitalService.watchHospitals().listen(
+      (data) {
+        hospitals.assignAll(data);
+        filteredHospitals.assignAll(data);
+
+        isLoading.value = false;
+      },
+      onError: (error) {
+        isLoading.value = false;
+        errorMessage.value =
+            'Unable to load hospitals.';
+      },
+    );
   }
 
   void searchHospitals(String query) {
-    searchQuery.value = query;
+    final value = query.trim().toLowerCase();
 
-    if (query.trim().isEmpty) {
+    if (value.isEmpty) {
       filteredHospitals.assignAll(hospitals);
       return;
     }
 
-    final searchText = query.toLowerCase().trim();
-
-    final results = hospitals.where((hospital) {
+    final result = hospitals.where((hospital) {
       final name = hospital.name.toLowerCase();
       final location = hospital.location.toLowerCase();
 
       final specialisations = hospital.specialisations
-          .map((specialisation) => specialisation.toLowerCase())
-          .join(' ');
+          .join(' ')
+          .toLowerCase();
 
-      return name.contains(searchText) ||
-          location.contains(searchText) ||
-          specialisations.contains(searchText);
+      return name.contains(value) ||
+          location.contains(value) ||
+          specialisations.contains(value);
     }).toList();
 
-    filteredHospitals.assignAll(results);
+    filteredHospitals.assignAll(result);
   }
 
-  void clearSearch() {
-    searchQuery.value = '';
-
-    filteredHospitals.assignAll(hospitals);
+  @override
+  void onClose() {
+    _hospitalSubscription?.cancel();
+    super.onClose();
   }
 }
