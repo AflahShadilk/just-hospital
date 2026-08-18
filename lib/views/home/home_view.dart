@@ -18,10 +18,13 @@ class HomeView extends GetView<HospitalController> {
         child: Column(
           children: [
             const HomeHeader(),
+
             HospitalSearchField(
               onChanged: controller.searchHospitals,
             ),
+
             const SizedBox(height: 8),
+
             Expanded(
               child: hospitalList(),
             ),
@@ -57,9 +60,12 @@ class HomeView extends GetView<HospitalController> {
           24,
         ),
         itemCount: controller.filteredHospitals.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 16),
+        separatorBuilder: (_, __) {
+          return const SizedBox(height: 16);
+        },
         itemBuilder: (context, index) {
-          final hospital = controller.filteredHospitals[index];
+          final hospital =
+              controller.filteredHospitals[index];
 
           return HospitalCard(
             hospital: hospital,
