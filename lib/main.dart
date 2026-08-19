@@ -28,7 +28,7 @@ class JustDialHospitalApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'JustDial Hospital',
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
       getPages: AppRoutes.pages,
     );
   }
