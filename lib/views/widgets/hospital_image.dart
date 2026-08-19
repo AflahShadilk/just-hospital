@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:justhospital/core/app/theme/app_theme.dart';
 
-
 class HospitalImage extends StatelessWidget {
   final String imageUrl;
 
@@ -19,32 +18,40 @@ class HospitalImage extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 16 / 8,
         child: imageUrl.trim().isEmpty
-            ? _buildPlaceholder()
-            : Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                loadingBuilder: (
-                  context,
-                  child,
-                  loadingProgress,
-                ) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
+            ? placeholderBuld()
+            : imageUrl.startsWith('assets/')
+                ? Image.asset(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) {
+                      return placeholderBuld();
+                    },
+                  )
+                : Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (
+                      context,
+                      child,
+                      loadingProgress,
+                    ) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
 
-                  return _buildLoadingState(
-                    loadingProgress,
-                  );
-                },
-                errorBuilder: (_, __, ___) {
-                  return _buildPlaceholder();
-                },
-              ),
+                      return loadingState(
+                        loadingProgress,
+                      );
+                    },
+                    errorBuilder: (_, __, ___) {
+                      return placeholderBuld();
+                    },
+                  ),
       ),
     );
   }
 
-  Widget _buildLoadingState(
+  Widget loadingState(
     ImageChunkEvent loadingProgress,
   ) {
     final expectedTotal =
@@ -73,7 +80,7 @@ class HospitalImage extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaceholder() {
+  Widget placeholderBuld() {
     return Container(
       color: const Color(0xFFEFF3F8),
       child: Center(

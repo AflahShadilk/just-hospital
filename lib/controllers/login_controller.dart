@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justhospital/core/app/routes/app_routes.dart';
+import 'package:justhospital/data/hospital_seeder.dart';
 
 class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,7 +39,7 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
-
+      await HospitalSeeder.seed();
       Get.offNamed(AppRoutes.home);
     } on FirebaseAuthException catch (error) {
       showError(
