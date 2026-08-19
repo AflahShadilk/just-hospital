@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justhospital/core/app/routes/app_routes.dart';
@@ -15,20 +16,28 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     super.initState();
 
-    _navigateToHome();
+    checkAuthentication();
   }
 
-  void _navigateToHome() {
+  void checkAuthentication() {
     Timer(
       const Duration(seconds: 2),
       () {
         if (!mounted) return;
 
-        Get.offNamed(AppRoutes.home);
+        final user = _auth.currentUser;
+
+        if (user != null) {
+          Get.offNamed(AppRoutes.home);
+        } else {
+          Get.offNamed(AppRoutes.login);
+        }
       },
     );
   }
