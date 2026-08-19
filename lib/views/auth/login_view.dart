@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justhospital/controllers/login_controller.dart';
+import 'package:justhospital/core/app/routes/app_routes.dart';
 import 'package:justhospital/core/app/theme/app_theme.dart';
-
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
@@ -21,40 +21,29 @@ class LoginView extends GetView<LoginController> {
             24,
           ),
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildLogo(),
-
+              logo(),
               const SizedBox(height: 32),
-
               Text(
                 'Welcome back',
                 style: theme.textTheme.headlineLarge,
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 'Login to find hospitals and healthcare near you.',
                 style: theme.textTheme.bodyMedium,
               ),
-
               const SizedBox(height: 32),
-
               Text(
                 'Email',
                 style: theme.textTheme.titleMedium,
               ),
-
               const SizedBox(height: 8),
-
               TextField(
                 controller: controller.emailController,
-                keyboardType:
-                    TextInputType.emailAddress,
-                textInputAction:
-                    TextInputAction.next,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   hintText: 'Enter your email',
                   prefixIcon: Icon(
@@ -62,24 +51,17 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               Text(
                 'Password',
                 style: theme.textTheme.titleMedium,
               ),
-
               const SizedBox(height: 8),
-
               Obx(
                 () => TextField(
-                  controller:
-                      controller.passwordController,
-                  obscureText:
-                      controller.obscurePassword.value,
-                  textInputAction:
-                      TextInputAction.done,
+                  controller: controller.passwordController,
+                  obscureText: controller.obscurePassword.value,
+                  textInputAction: TextInputAction.done,
                   onSubmitted: (_) {
                     controller.login();
                   },
@@ -89,36 +71,28 @@ class LoginView extends GetView<LoginController> {
                       Icons.lock_outline_rounded,
                     ),
                     suffixIcon: IconButton(
-                      onPressed: controller
-                          .togglePasswordVisibility,
+                      onPressed: controller.togglePasswordVisibility,
                       icon: Icon(
-                        controller
-                                .obscurePassword.value
+                        controller.obscurePassword.value
                             ? Icons.visibility_outlined
-                            : Icons
-                                .visibility_off_outlined,
+                            : Icons.visibility_off_outlined,
                       ),
                     ),
                   ),
                 ),
               ),
-
               const SizedBox(height: 28),
-
               Obx(
                 () => SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed:
-                        controller.isLoading.value
-                            ? null
-                            : controller.login,
+                        controller.isLoading.value ? null : controller.login,
                     child: controller.isLoading.value
                         ? const SizedBox(
                             width: 22,
                             height: 22,
-                            child:
-                                CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               strokeWidth: 2.5,
                               color: Colors.white,
                             ),
@@ -127,14 +101,11 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               Center(
                 child: TextButton(
                   onPressed: () {
-                    // Create account feature
-                    // will be connected next.
+                    Get.toNamed(AppRoutes.register);
                   },
                   child: const Text(
                     'Create a new account',
@@ -148,7 +119,7 @@ class LoginView extends GetView<LoginController> {
     );
   }
 
-  Widget _buildLogo() {
+  Widget logo() {
     return Container(
       width: 64,
       height: 64,

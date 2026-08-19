@@ -25,10 +25,10 @@ class HospitalController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _listenToHospitals();
+    listenToHospitals();
   }
 
-  void _listenToHospitals() {
+  void listenToHospitals() {
     isLoading.value = true;
     errorMessage.value = '';
 

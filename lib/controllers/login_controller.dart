@@ -16,18 +16,18 @@ class LoginController extends GetxController {
     final email = emailController.text.trim();
     final password = passwordController.text;
 
-    final emailError = _validateEmail(email);
+    final emailError = validateEmail(email);
 
     if (emailError != null) {
-      _showError(emailError);
+      showError(emailError);
       return;
     }
 
     final passwordError =
-        _validatePassword(password);
+        validatePassword(password);
 
     if (passwordError != null) {
-      _showError(passwordError);
+      showError(passwordError);
       return;
     }
 
@@ -41,11 +41,11 @@ class LoginController extends GetxController {
 
       Get.offNamed(AppRoutes.home);
     } on FirebaseAuthException catch (error) {
-      _showError(
-        _getErrorMessage(error),
+      showError(
+        getErrorMessage(error),
       );
     } catch (_) {
-      _showError(
+      showError(
         'Something went wrong. Please try again.',
       );
     } finally {
@@ -53,7 +53,7 @@ class LoginController extends GetxController {
     }
   }
 
-  String? _validateEmail(String email) {
+  String? validateEmail(String email) {
     if (email.isEmpty) {
       return 'Please enter your email.';
     }
@@ -73,7 +73,7 @@ class LoginController extends GetxController {
     return null;
   }
 
-  String? _validatePassword(String password) {
+  String? validatePassword(String password) {
     if (password.isEmpty) {
       return 'Please enter your password.';
     }
@@ -97,7 +97,7 @@ class LoginController extends GetxController {
     obscurePassword.toggle();
   }
 
-  String _getErrorMessage(
+  String getErrorMessage(
     FirebaseAuthException error,
   ) {
     switch (error.code) {
@@ -127,7 +127,7 @@ class LoginController extends GetxController {
     }
   }
 
-  void _showError(String message) {
+  void showError(String message) {
     Get.snackbar(
       'Login Failed',
       message,
