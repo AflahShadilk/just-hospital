@@ -24,8 +24,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    final passwordError =
-        validatePassword(password);
+    final passwordError = validatePassword(password);
 
     if (passwordError != null) {
       showError(passwordError);
@@ -45,9 +44,11 @@ class LoginController extends GetxController {
       showError(
         getErrorMessage(error),
       );
-    } catch (_) {
+    } catch (error) {
+      debugPrint('HOSPITAL SEED ERROR: $error');
+
       showError(
-        'Something went wrong. Please try again.',
+        error.toString(),
       );
     } finally {
       isLoading.value = false;

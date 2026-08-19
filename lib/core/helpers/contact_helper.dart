@@ -3,17 +3,33 @@ import 'package:url_launcher/url_launcher.dart';
 class ContactHelper {
   ContactHelper._();
 
-  static Future<void> callHospital(String phone) async {
-    final Uri phoneUri = Uri(
-      scheme: 'tel',
-      path: phone,
-    );
+  static Future<void> callHospital(
+    String phoneNumber,
+  ) async {
+    final cleanedNumber = phoneNumber
+        .replaceAll(' ', '')
+        .replaceAll('-', '')
+        .trim();
 
-    if (await canLaunchUrl(phoneUri)) {
-      await launchUrl(phoneUri);
-      return;
+    if (cleanedNumber.isEmpty) {
+      throw Exception(
+        'Hospital phone number is empty.',
+      );
     }
 
-    throw Exception('Could not launch phone dialer');
+    final Uri phoneUri = Uri(
+      scheme: 'tel',
+      path: cleanedNumber,
+    );
+
+    final launched = await launchUrl(
+      phoneUri,
+    );
+
+    if (!launched) {
+      throw Exception(
+        'Could not open phone dialer.',
+      );
+    }
   }
 }

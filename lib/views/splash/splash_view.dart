@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justhospital/core/app/routes/app_routes.dart';
 import 'package:justhospital/core/app/theme/app_theme.dart';
-
+import 'package:justhospital/data/hospital_seeder.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -25,21 +25,34 @@ class _SplashViewState extends State<SplashView> {
     checkAuthentication();
   }
 
-  void checkAuthentication() {
-    Timer(
+  Future<void> checkAuthentication() async {
+    await Future.delayed(
       const Duration(seconds: 2),
-      () {
-        if (!mounted) return;
-
-        final user = _auth.currentUser;
-
-        if (user != null) {
-          Get.offNamed(AppRoutes.home);
-        } else {
-          Get.offNamed(AppRoutes.login);
-        }
-      },
     );
+
+    if (!mounted) return;
+
+    final user = _auth.currentUser;
+
+    if (user != null) {
+      try {
+        await HospitalSeeder.seed();
+
+        debugPrint(
+          'HOSPITAL SEED COMPLETED SUCCESSFULLY',
+        );
+      } catch (error) {
+        debugPrint(
+          'HOSPITAL SEED ERROR: $error',
+        );
+      }
+
+      if (!mounted) return;
+
+      Get.offNamed(AppRoutes.home);
+    } else {
+      Get.offNamed(AppRoutes.login);
+    }
   }
 
   @override
